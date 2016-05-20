@@ -33,7 +33,6 @@
 			}
 
 			var myJSON = JSON.stringify(output);
-			// console.log(myJSON);
 
 			// code below will append a table to HTML using the maniuplated JSON data
 			$.makeTable = function (mydata) {
@@ -50,12 +49,12 @@
 			        TableRow += "</tr>";
 			        $(table).append(TableRow);
 			    });
-			    return ($(table));
-			};
+			return ($(table));
+		};
 
-			var mydata = eval(myJSON);
-			var table = $.makeTable(mydata);
-			$(table).appendTo("#CollatedTable");
+		var mydata = eval(output);
+		var table = $.makeTable(mydata);
+		$(table).appendTo("#CollatedTable");
 
   		});
 

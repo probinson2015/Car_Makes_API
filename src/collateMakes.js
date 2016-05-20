@@ -43,52 +43,33 @@ var collateMakes = function(data){
 	var countries = {};
 	var output = [];
 
-	if (!$.isArray(data)){
+	for (var i in data.Makes){
+		var countryName = data.Makes[i].make_country;
 
-		for (var i in data.Makes){
-			var countryName = data.Makes[i].make_country;
+		if (!countries[countryName]){
+			countries[countryName] = {country: countryName, uncommon_makes:0, common_makes:0};
+		}
 
-			if (!countries[countryName]){
-				countries[countryName] = {country: countryName, uncommon_makes:0, common_makes:0};
+		if (data.Makes[i].make_is_common === "1"){
+				countries[countryName].common_makes += 1;
+			} else {
+				countries[countryName].uncommon_makes += 1;
 			}
-
-			if (data.Makes[i].make_is_common === "1"){
-					countries[countryName].common_makes += 1;
-				} else {
-					countries[countryName].uncommon_makes += 1;
-				}
-		}
-
-		for (var i in countries){
-			output.push(countries[i]);
-		}
-
-		var myJSON = JSON.stringify(output);
-		console.log("object" + myJSON);
-		return myJSON;
-	} else {
-		for (var i in data){
-			var countryName = data[i].make_country;
-
-			if (!countries[countryName]){
-				countries[countryName] = {country: countryName, uncommon_makes:0, common_makes:0};
-			}
-
-			if (data[i].make_is_common === "1"){
-					countries[countryName].common_makes += 1;
-				} else {
-					countries[countryName].uncommon_makes += 1;
-				}
-		}
-
-		for (var i in countries){
-			output.push(countries[i]);
-		}
-
-		var myJSON = JSON.stringify(output);
-		console.log("array" + myJSON);
-		return myJSON;
 	}
+
+	for (var i in countries){
+		output.push(countries[i]);
+	}
+
+	return output;
 };
 
+var testCollateMakes = function(actual, expected){
+	if (JSON.stringify(collateMakes(actual))===JSON.stringify(expected)){
+		return true; 
+		} else {
+			return false;
+	}
+}
 collateMakes(dataset1);
+console.log(testCollateMakes(dataset1, dataset2));
