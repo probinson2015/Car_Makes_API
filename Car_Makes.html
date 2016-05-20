@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8"/>
+        <meta name="description" content="Add description ">
+        <title>Car Makes</title>
+		<script   src="https://code.jquery.com/jquery-2.2.3.min.js"   integrity="sha256-a23g1Nt4dtEYOj7bR+vTu7+T8VP13humZFBJNIYoEJo="   crossorigin="anonymous"></script>  
+		<script type="text/javascript" src="http://www.carqueryapi.com/js/carquery.0.3.4.js"></script>
+		<script type="text/javascript" src="src/collateMakes.js"></script>
+		<script type="text/javascript">
+
+		$.getJSON( "http://www.carqueryapi.com/api/0.3/?callback=?&cmd=getMakes", function( data ) {
+			
+			var countries = {};
+			var output = [];
+
+			for (var i in data.Makes){
+				var countryName = data.Makes[i].make_country;
+
+				if (!countries[countryName]){
+					countries[countryName] = {country: countryName, uncommon_makes:0, common_makes:0};
+				}
+
+				if (data.Makes[i].make_is_common === "1"){
+						countries[countryName].common_makes += 1;
+					} else {
+						countries[countryName].uncommon_makes += 1;
+					}
+			}
+
+			for (var i in countries){
+				output.push(countries[i]);
+			}
+
+			var myJSON = JSON.stringify(output);
+			// console.log(myJSON);
+
+			// code below will append a table to HTML using the maniuplated JSON data
+			$.makeTable = function (mydata) {
+			    var table = $('<table border=1 style="border-collapse:collapse; text-align:center">');
+			    var tblHeader = "<tr>";
+			    for (var k in mydata[0]) tblHeader += "<th>" + k + "</th>";
+			    tblHeader += "</tr>";
+			    $(tblHeader).appendTo(table);
+			    $.each(mydata, function (index, value) {
+			        var TableRow = "<tr>";
+			        $.each(value, function (key, val) {
+			            TableRow += "<td>" + val + "</td>";
+			        });
+			        TableRow += "</tr>";
+			        $(table).append(TableRow);
+			    });
+			    return ($(table));
+			};
+
+			var mydata = eval(myJSON);
+			var table = $.makeTable(mydata);
+			$(table).appendTo("#CollatedTable");
+
+  		});
+
+		</script>
+	</head>
+
+	<body>
+		<div id="CollatedTable"></div>  
+	</body>
+
+</html>
