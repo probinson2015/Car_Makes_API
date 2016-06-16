@@ -1,19 +1,19 @@
 <!DOCTYPE html>
 <html>
-    <head>
-        <meta charset="utf-8"/>
-        <meta name="description" content="Add description ">
-        <title>Car Makes</title>
+	<head>
+	<meta charset="utf-8"/>
+	<meta name="description" content="Add description ">
+	<title>Car Makes</title>
 		<script   src="https://code.jquery.com/jquery-2.2.3.min.js"   integrity="sha256-a23g1Nt4dtEYOj7bR+vTu7+T8VP13humZFBJNIYoEJo="   crossorigin="anonymous"></script>  
 		<script type="text/javascript" src="http://www.carqueryapi.com/js/carquery.0.3.4.js"></script>
 		<script type="text/javascript" src="collateMakes.js"></script>
 		<script type="text/javascript">
-
+	
 		$.getJSON( "http://www.carqueryapi.com/api/0.3/?callback=?&cmd=getMakes", function( data ) {
 			var output = collateMakes(data);
 			
 			var myJSON = JSON.stringify(output);
-
+	
 			// code below will append a table to HTML using the maniuplated JSON data
 			$.makeTable = function (mydata) {
 			    var table = $('<table border=1 style="border-collapse:collapse; text-align:center">');
@@ -31,13 +31,13 @@
 			    });
 			return ($(table));
 			};
-
+	
 			var mydata = eval(output);
 			var table = $.makeTable(mydata);
 			$(table).appendTo("#CollatedTable");
-
-  		});
-
+	
+	  	});
+	
 		</script>
 	</head>
 
